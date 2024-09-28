@@ -48,14 +48,6 @@ XOR: "x [literals] 0"
 Cardinality constraints: 
       
     eg: "+1 x_1 +1 x_2 +1 x_4 + 1 x_5 >= 2 ;" (note the ";")
-    
-  Alternatively, you can use the pseudo-Boolean encoding:
-  	
-	"1 x1 + 1 x2 + 1 x4 - 1 x5 >= 1"
-   
-  if you want to include a global cardinality constraint (a constriant containing all variables and all the literals are positive), use a line "g [k]". (Note: no '0' at the end of the line!)
-  
-      eg: x_1+x_2+x_3+x_4+x_5 <= 2: "g -2"
       
 Not all equal: "n [literals] 0"
 
