@@ -1,6 +1,6 @@
 FourierSAT is a versatile SAT/MaxSAT solver for hybrid Boolean constraints. 
 
-The types of constraints include: CNF (-or), XOR, cardinality constraints and NAE (not all equal).
+The types of constraints include CNF (-or), XOR, cardinality constraints, and NAE (not all equal).
 
 Paper: FourierSAT: A Fourier Expansion-Based Algebraic Framework for Solving Hybrid Boolean Constraints
 https://arxiv.org/abs/1912.01032
@@ -31,11 +31,11 @@ python usage:
 
 For example, in FourierSAT_Github_AIJ/, run:
 
-	python FourierSAT.py sample.cnf --timelimit 10 --tolerance 1 --cpus 2 --verbose 1
+	python FourierSAT.py sample.cnf --timelimit 10
 
 Input: Extended DIMACS Format
 -------------------------
-FourierSAT accepts an extended DIMACS format which can handle CNF, XOR, cardinality constraints and Not-all-equal clauses. MaxSAT instances (.wcnf) and cardinality constraints encoded in pseudo-Boolean format (.opb) are also accepted.
+FourierSAT accepts an extended DIMACS format that can handle CNF, XOR, cardinality constraints, and Not-all-equal clauses. MaxSAT instances (.wcnf) and cardinality constraints encoded in pseudo-Boolean format (.opb) are also accepted.
 
 CNF: "[literals] 0"
 
