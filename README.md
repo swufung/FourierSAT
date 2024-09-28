@@ -47,7 +47,7 @@ XOR: "x [literals] 0"
      
 Cardinality constraints: 
       
-    eg: "+1 x_1 +1 x_2 +1 x_4 + 1 x_5 >= 2"
+    eg: "+1 x_1 +1 x_2 +1 x_4 + 1 x_5 >= 2 ;" (note the ";")
     
   Alternatively, you can use the pseudo-Boolean encoding:
   	
