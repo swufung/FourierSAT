@@ -58,7 +58,7 @@ def callback(xk):
 def optimizer_handler(clauses,klist,param,weight,ctype,no,FC_table):
     numofvars,numofclas = param
     np.random.seed(ARGS.trial_no)
-    x0 = (2 * np.random.rand(numofvars) - 1)
+    x0 =  (2 * np.random.rand(numofvars) - 1)
     numofvars,numofclas = param
     args = [clauses, weight, klist, ctype, FC_table]
     if ARGS.optimizer == "GD":
@@ -82,7 +82,7 @@ def optimizer_handler(clauses,klist,param,weight,ctype,no,FC_table):
             bnds = ()
             for j in range(numofvars): bnds += ((-1, 1),) 
             res = so.minimize(fun, x0, method=ARGS.optimizer, bounds=bnds,jac=gradient,args=args,options=opt, callback=callback, tol=1e-3)  #Alternative method: L-BFGS-B tol=0.1
-            return {'distFval': res.fun, 'contFval': res.fun, 'x': res.x, 'iterNum': res.nit}
+        return {'distFval': res.fun, 'contFval': res.fun, 'x': res.x, 'iterNum': res.nit}
         #res = so.basinhopping(fun, [0 for i in range(numofvars)], minimizer_kwargs = {'args':args})  #Alternative method: L-BFGS-B tol=0.1
         #res = so.direct(fun, args=args, callback=callback)  #Alternative method: L-BFGS-B tol=0.1
         #res = so.dual_annealing(fun, args=args, callback=callback)  #Alternative method: L-BFGS-B tol=0.1
@@ -110,6 +110,7 @@ def solve(filepath,timelimit,tolerance,cpus,verbose):
         total_time_limit = timelimit
         solved_flag = 0
         weight_group = []
+        if ARGS.mode == 'solver': ARGS.maxTrial = 20
         for _ in range(cpus):
             weight_group.append(weight)
         while elapsed < total_time_limit:
@@ -141,13 +142,13 @@ def solve(filepath,timelimit,tolerance,cpus,verbose):
                             print('o '+repr(num_of_unsat))
             print('distFval = ' + repr(num_of_unsat) + ' contFval = ' + repr(res['contFval']) +  ' iterNum = ' + repr(res['iterNum']) + ' time = ' + repr(time.time() - trial_start) + ' TrialNum = ' + repr(ARGS.trial_no) + ' avgIterTime ' + repr((time.time() - trial_start)/res['iterNum']))
             
+            elapsed = time.time() - start
             if verbose == 1:
                 print('#UNSAT clauses: '+repr(best_unsat_num))
             if ARGS.mode == 'solver' and best_unsat_num <= tolerance:
                 solved_flag = 1
-                print('s Solved at iterNum = ' + repr(res['iterNum']) + ' time = ' + repr(time.time() - trial_start) + ' TrialNum = ' + repr(ARGS.trial_no) + ' avgTimePerIteration ' + repr((time.time() - trial_start)/res['iterNum']))
-            
-            elapsed = time.time() - start
+                print('s Solved at iterNum = ' + repr(res['iterNum']) + ' time = ' + repr(time.time() - trial_start) + ' TrialNum = ' + repr(ARGS.trial_no) + ' avgTimePerIteration ' + repr((time.time() - trial_start)/res['iterNum']), 'totalTime', elapsed)
+                break 
             if ARGS.trial_no >= ARGS.maxTrial: break
         """
         if solved_flag==0:

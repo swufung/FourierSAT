@@ -1,10 +1,10 @@
 *.pyc
 *.sh
 *.slurm
-
+*.png
 benchmarks/
 error_messages/
 __pycache__
 old/
 results_2024/
-
+figs/

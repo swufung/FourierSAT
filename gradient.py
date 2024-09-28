@@ -18,6 +18,8 @@ def gradient(x,args):
             if clause_value < 0: temp_grad = [ - temp_grad[kk] for kk in range(len(temp_grad))]
         elif ARGS.objectiveType == "square":
             temp_grad = [  2 * temp_grad[kk] * clause_value for kk in range(len(temp_grad))]
+        elif ARGS.objectiveType == "ce":
+            temp_grad = [  temp_grad[kk] / (1 - clause_value) for kk in range(len(temp_grad))]
         for i in range(len(clause)):
             grad[abs(clause[i])-1] += weight[k] * temp_grad[i]
     if ARGS.beta > 1e-4:

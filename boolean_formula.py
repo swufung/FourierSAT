@@ -134,18 +134,18 @@ class Formula:
         """
         result = Formula()
         vars = defaultdict(lambda: result.fresh_variable(1, 1))
-
         num_vars = 0
         with open(filename, 'r') as f:
             for line in f:
-                if len(line) == 0 or line[0] == 'c' or line[0] == '*':
+                if len(line) == 0 or line[0] == 'c':
                     continue
                 split = line.split()
                 if not split: continue
                 if len(split)>=2 and split[1] == '#variable=':
                     num_vars = int(line.split()[2])
+                    print('nvars = ',num_vars)
                     result._variables = [i+1 for i in range(num_vars)]
-                if line[0] == 'p':
+                elif line[0] == 'p':
                     num_vars = int(line.split()[2])
                     result._variables = [i+1 for i in range(num_vars)]
                 elif line[0] == 'g':
@@ -191,8 +191,13 @@ class Formula:
                     comparator = split[len(split)-3]
                     k = int(split[len(split)-2])
                     literals, k, coefs, comparator = canonicalize(literals, k, coefs, comparator)
-                    weight = magic_weight(len(literals), 1 , 'x') # linear constraints
-                    result.add_clause(literals,k,'p',weight,coefs,comparator)
+                    weight = magic_weight(len(literals), 1 , 'd') # linear constraints
+                    # currently only support cardinality constraints
+                    assert len(set(coefs)) == 1 and coefs[0] == 1, "only cardinality constraints are support. To solve general PB constraints, use GradSAT" 
+                    if comparator == ">=":
+                        result.add_clause(literals,k,'c', weight, comparator=comparator, coefs=coefs)
+                    else:
+                        assert False, "unsupported operator"
                     #print('add pb constraint. literals= '+repr(literals)+' coefs= '+repr(coefs)+' k= '+repr(k))
                 else: # cnf clauses
                     literals = map(int, [line.split()[i] for i in range(0,len(line.split())-1)])
@@ -201,11 +206,11 @@ class Formula:
                     weight = magic_weight(len(literals),1,'c')
                     if len(literals) == 0:
                         continue
-                    result.add_clause(literals,1,'c',weight, coefs,'>=')
+                    result.add_clause(literals,1,'c',weight, coefs=coefs,comparator='>=')
         return result
 
 def magic_weight(n,k,ctype):
-    return 1
+    return n
     weight_type = '2'
     negflag = 0
     if k<0:

@@ -25,7 +25,7 @@ def sgd(
     x0,
     jac,
     args=(),
-    learning_rate=0.01,
+    learning_rate=5e-2,
     mass=0.9,
     startiter=0,
     maxiter=1000,
@@ -57,7 +57,7 @@ def rmsprop(
     x0,
     jac,
     args=(),
-    learning_rate=0.1,
+    learning_rate=5e-2,
     gamma=0.9,
     eps=1e-8,
     startiter=0,
@@ -90,12 +90,13 @@ def adam(
     x0,
     jac,
     args=(),
-    learning_rate=0.05,
+    learning_rate=5e-2,
+    #learning_rate=1e-1,
     beta1=0.9,
     beta2=0.999,
     eps=1e-8,
     startiter=0,
-    maxiter=1000,
+    maxiter=500,
     callback=None,
     **kwargs
 ):
@@ -118,9 +119,10 @@ def adam(
         mhat = m / (1 - beta1**(i + 1))  # bias correction.
         vhat = v / (1 - beta2**(i + 1))
         x = x - learning_rate * mhat / (np.sqrt(vhat) + eps)
-        distfval = fun(rounding(x), args)       
-        fval = fun(x, args)       
-        print("fval", fval, "distfval", distfval)
-        if distfval < 1: break
+        distFval = fun(rounding(x), args)       
+        contFval = fun(x, args)       
+        #print("contFval", fval, "distFval", distfval)
+        print("iter " + repr(i) + " distFval " + repr(distFval) + " contFval " + repr(contFval)) # + " time " + repr(time.time()))
+        if distFval < 1: break
     i += 1
     return OptimizeResult(x=x, fun=fun(x, args), jac=g, nit=i, nfev=i, success=True)

@@ -45,11 +45,9 @@ XOR: "x [literals] 0"
 
      eg: clause x_1 xor \neg x_2: "x 1 -2 0"
      
-Cardinality constraints: "d [k] [literals] 0"
-      k>0 means greater or equal
-      k<0 means less or equal
+Cardinality constraints: 
       
-    eg: x_1 + x_2 + x_4 + \neg x_5 >=2: "d 2 1 2 4 -5 0"
+    eg: "+1 x_1 +1 x_2 +1 x_4 + 1 x_5 >= 2"
     
   Alternatively, you can use the pseudo-Boolean encoding:
   	
