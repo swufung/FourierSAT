@@ -15,11 +15,11 @@ def gradient(x,args):
             clause_value = 0.5 * (1 + prod(j/abs(j)*x[abs(j)-1] for j in clause))
             temp_grad = grad_BP_XOR(clause,x,klist[k],ctype[k],FC_table[k])
         if ARGS.objectiveType == "abs":
-            if clause_value < 0: temp_grad = [ - temp_grad[kk] for kk in range(len(temp_grad))]
+            if clause_value < 0: temp_grad = [ - t for t in temp_grad ]
         elif ARGS.objectiveType == "square":
-            temp_grad = [  2 * temp_grad[kk] * clause_value for kk in range(len(temp_grad))]
+            temp_grad = [  2 * t * clause_value for t in temp_grad ]
         elif ARGS.objectiveType == "ce":
-            temp_grad = [  temp_grad[kk] / (1 - clause_value) for kk in range(len(temp_grad))]
+            temp_grad = [  t / (1 - clause_value) for t in temp_grad]
         for i in range(len(clause)):
             grad[abs(clause[i])-1] += weight[k] * temp_grad[i]
     if ARGS.beta > 1e-4:

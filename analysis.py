@@ -29,14 +29,22 @@ def getList(solverName, allFiles):
 def analyze_solver(benchmark, names):
     benchmarks = os.listdir(benchmark)
     results = {}
-    
+    solvers_temp = ["SLSQP_0.0", "SLSQP_0.2","SLSQP_0.4","SLSQP_0.6", "SLSQP_0.8", "SLSQP_1.0", "SLSQP_1.2", "SLSQP_1.4", "SLSQP_1.6", "SLSQP_1.8"]
+    solvers_temp = ["ADAM_0.0", "ADAM_0.2","ADAM_0.4","ADAM_0.6", "ADAM_0.8", "ADAM_1.0", "ADAM_1.2", "ADAM_1.4", "ADAM_1.6", "ADAM_1.8"]
     for name in names:
         if name == "penaltyTermABS":
-            solvers = ["constrained_SLSQP_ABS_0.0", "constrained_SLSQP_ABS_0.2","constrained_SLSQP_ABS_0.4","constrained_SLSQP_ABS_0.6","constrained_SLSQP_ABS_0.8"]
-            r = [0,0.2,0.4,0.6,0.8]
+            solvers = ["unconstrained_ABS_" + s for s in solvers_temp]
+            r = [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8]
         elif name == "penaltyTermSQUARE":
-            solvers = ["unconstrained_SLSQP_0.0", "unconstrained_SLSQP_0.2","unconstrained_SLSQP_0.4","unconstrained_SLSQP_0.6","unconstrained_SQUARE_0.8"]
-            r = [0,0.2,0.4,0.6,0.8]
+            solvers = ["unconstrained_SQUARE_" + s for s in solvers_temp]
+            r = [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8]
+        elif name == "penaltyTermABS-C":
+            solvers = ["constrained_ABS_" + s for s in solvers_temp]
+            r = [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8]
+        elif name == "penaltyTermSQUARE-C":
+            solvers = ["constrained_SQUARE_" + s for s in solvers_temp]
+            r = [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8]
+
         elif name == "formulation_SLSQP":
             r = ["SLSQP-ABS-C", "SLSQP-SQUARE-C","SLSQP-LINEAR-C", "SLSQP-SQUARE", "SLSQP-ABS"]
             solvers = ["constrained_ABS_SLSQP", "constrained_SQUARE_SLSQP","constrained_LINEAR_SLSQP", "unconstrained_SQUARE_SLSQP", "unconstrained_ABS_SLSQP"]
@@ -92,30 +100,30 @@ def drawHist():
 def analyze_thesis(benchmark = "CNF_1000", figDir = "figs/", name=""):
     results = {}
     successTrials = {}
-    #solvers = ["unconstrained_GD", "constrained_GD", "unconstrained_SLSQP", "unconstrained_CG", "constrained_SLSQP", "unconstrained_LBFGSB", "constrained_LBFGSB", "constrained_ABS_SLSQP", "constrained_SQUARE_SLSQP", "unconstrained_ABS_SLSQP", "constrained_SQUARE_GD", "constrained_ABS_GD"]
-    #solvers = ["unconstrained_GD", "constrained_GD", "unconstrained_SLSQP",  "constrained_SLSQP", "unconstrained_LBFGSB", "constrained_LBFGSB", "constrained_ABS_SLSQP", "constrained_SQUARE_SLSQP", "unconstrained_ABS_SLSQP", "constrained_SQUARE_GD", "constrained_ABS_GD"]
-    #solvers = ["unconstrained_SQUARE_SLSQP", "unconstrained_SQUARE_CG","constrained_LINEAR_SLSQP", "constrained_SQUARE_SLSQP", "unconstrained_ABS_SLSQP", "constrained_ABS_SLSQP"]
-    #solvers = ["constrained_ABS_GD", "unconstrained_SQUARE_GD", "constrained_LINEAR_GD", "constrained_SQUARE_GD"]
-    #solvers = ["constrained_ABS_SLSQP", "unconstrained_ABS_SLSQP", "unconstrained_SQUARE_SLSQP","constrained_LINEAR_SLSQP", "constrained_SQUARE_SLSQP"]
     solvers = []    
+    solversMap = {"unconstrained_SQUARE_GD":"GD-SQUARE", "unconstrained_SQUARE_ADAM":"ADAM-SQUARE", "unconstrained_SQUARE_SLSQP":"SLSQP-SQUARE", "constrained_SQUARE_SLSQP":"SLSQP-SQUARE-C", "constrained_SQUARE_GD":"GD-SQUARE-C", "unconstrained_ABS_GD":"GD-ABS","unconstrained_ABS_SLSQP":"SLSQP-ABS","constrained_ABS_GD":"GD-ABS-C","constrained_ABS_SLSQP":"SLSQP-ABS-C", "constrained_LINEAR_SLSQP":"SLSQP-LINEAR-C", "constrained_LINEAR_GD":"GD-LINEAR-C"}
    
     if benchmark == "CNF_1000": Range = range(10,40,2)
-    elif benchmark == "XOR_1000": Range = range(1,10,1)
+    elif benchmark == "XOR_1000": Range = range(1,6,1)
     if name == "SLSQP": 
         solvers = ["constrained_LINEAR_SLSQP", "constrained_SQUARE_SLSQP", "unconstrained_SQUARE_SLSQP"]
     elif name == "GD": 
         solvers = [ "constrained_LINEAR_GD", "constrained_SQUARE_GD", "constrained_ABS_GD", "unconstrained_SQUARE_GD"]
     elif name == "diffAlgo": 
-        solvers = ["unconstrained_SQUARE_GD", "unconstrained_SQUARE_ADAM", "unconstrained_SQUARE_SLSQP"]
+        solvers = ["constrained_LINEAR_GD","unconstrained_SQUARE_GD", "unconstrained_SQUARE_ADAM", "unconstrained_SQUARE_SLSQP", "constrained_SQUARE_SLSQP", "constrained_SQUARE_GD", "unconstrained_ABS_GD","unconstrained_ABS_SLSQP","constrained_ABS_GD"]
     elif name == "formulation_SLSQP":
         solvers = ["constrained_ABS_SLSQP", "constrained_SQUARE_SLSQP","constrained_LINEAR_SLSQP", "unconstrained_SQUARE_SLSQP", "unconstrained_ABS_SLSQP"]
     elif name == "formulation_GD":
         solvers = ["constrained_ABS_GD", "constrained_SQUARE_GD","constrained_LINEAR_GD", "unconstrained_SQUARE_GD", "unconstrained_ABS_GD"]
-        #solvers = ["constrained_SQUARE_GD","constrained_LINEAR_GD", "unconstrained_SQUARE_GD"]
     elif name == "penaltyTermABS":
         solvers = ["unconstrained_ABS_SLSQP_0.0", "unconstrained_ABS_SLSQP_0.2","unconstrained_ABS_SLSQP_0.4","unconstrained_ABS_SLSQP_0.6","unconstrained_ABS_SLSQP_0.8"]
     elif name == "penaltyTermSQUARE":
         solvers = ["unconstrained_SQUARE_SLSQP_0.0", "unconstrained_SQUARE_SLSQP_0.2","unconstrained_SQUARE_SLSQP_0.4","unconstrained_SQUARE_SLSQP_0.6","unconstrained_SQUARE_SLSQP_0.8"]
+
+    elif name == "penaltyTermABS-C":
+        solvers = ["constrained_ABS_SLSQP_0.0", "constrained_ABS_SLSQP_0.2","constrained_ABS_SLSQP_0.4","constrained_ABS_SLSQP_0.6","constrained_ABS_SLSQP_0.8"]
+    elif name == "penaltyTermSQUARE-C":
+        solvers = ["constrained_SQUARE_SLSQP_0.0", "constrained_SQUARE_SLSQP_0.2","constrained_SQUARE_SLSQP_0.4","constrained_SQUARE_SLSQP_0.6","constrained_SQUARE_SLSQP_0.8"]
 
     for solver in solvers: 
         results[solver] = []
@@ -143,9 +151,9 @@ def analyze_thesis(benchmark = "CNF_1000", figDir = "figs/", name=""):
         print(solver)
         print(results[solver])
         print(successTrials[solver])
-        plt.plot(Range, results[solver])   
+        #plt.plot(Range, results[solver])   
     
-    if name == "penaltyTermSQUARE" or name == "penaltyTermABS": 
+    if "penalty" in name: 
         r = [0,0.2,0.4,0.6,0.8]
         fig, ax = plt.subplots()
         for solver in solvers:
@@ -157,12 +165,21 @@ def analyze_thesis(benchmark = "CNF_1000", figDir = "figs/", name=""):
         ax.legend(r, fontsize=16)
         plt.savefig(figDir + benchmark + '_' + name + '.png')
         plt.cla()
+    elif "diff" in name:
+        fig, ax = plt.subplots()
+        for solver in solvers:
+            ax.plot([k/10 for k in Range], results[solver], linewidth=3)
+        ax.set_ylabel('ratio of solved instances',fontsize=16)
+        ax.set_xlabel('clause-vairable ratio',fontsize=16)
+        ax.legend([solversMap[s] for s in solvers], fontsize=16)
+        plt.savefig(figDir + benchmark + '_' + name + '.png')
+        plt.cla()
 
-    elif name == "formulation_GD" or name == "formulation_SLSQP":
-        if "SLSQP" in name:
-            r = ["SLSQP-ABS-C", "SLSQP-SQUARE-C","SLSQP-LINEAR-C", "SLSQP-SQUARE", "SLSQP-ABS"]
-        elif "GD" in name:
-            r = ["GD-ABS-C", "GD-SQUARE-C","GD-LINEAR-C", "GD-SQUARE", "GD-ABS"]
+    elif "formulation" in name:
+        #if "SLSQP" in name:
+        #    r = ["SLSQP-ABS-C", "SLSQP-SQUARE-C","SLSQP-LINEAR-C", "SLSQP-SQUARE", "SLSQP-ABS"]
+        #elif "GD" in name:
+        #    r = ["GD-ABS-C", "GD-SQUARE-C","GD-LINEAR-C", "GD-SQUARE", "GD-ABS"]
             #solvers = ["constrained_ABS_GD", "constrained_SQUARE_GD","constrained_LINEAR_GD", "unconstrained_SQUARE_GD", "unconstrained_ABS_GD"]
         if problem == "CNF_1000" or problem == "XOR_1000":
             fig, ax = plt.subplots()
@@ -173,7 +190,7 @@ def analyze_thesis(benchmark = "CNF_1000", figDir = "figs/", name=""):
             ax.set_xlabel('clause-vairable ratio',fontsize=16)
             ax.tick_params(axis='both', which='major', labelsize=12)
 
-            ax.legend(r, fontsize=16)
+            ax.legend([solversMap[s] for s in solvers], fontsize=16)
             plt.savefig(figDir + benchmark + '_' + name + '.png')
             plt.cla()
         elif problem == "CNFXORCARD":
@@ -281,16 +298,17 @@ def analyze():
         print(totalScore)
 
 #problems = ["XOR_1000"] 
-#problems = ["CNF_1000", "XOR_1000"] 
-problems = ["cnfxorcard"] 
-#names = ["SLSQP", "GD", "diffAlgo", "formulation_SLSQP", "formulation_GD"]
-names = ["formulation_SLSQP", "formulation_GD"]
-#names = ["penaltyTermABS", "penaltyTermSQUARE"]
+problems = ["CNF_1000", "XOR_1000"] 
+#problems = ["cards"]
+#problems = ["cnfxorcard"] 
+names = ["diffAlgo","formulation_SLSQP", "formulation_GD"]
+#names = ["penaltyTermABS", "penaltyTermSQUARE", "penaltyTermABS-C", "penaltyTermSQUARE-C"]
 # figure 5
 #drawHist()
 
 for problem in problems:
     for name in names:
-        #analyze_thesis(benchmark = problem, name = name)
+        analyze_thesis(benchmark = problem, name = name)
 #analyze_thesis_maxsat("/benchmarks/MAXSAT_benchmarks/")
-        analyze_solver(benchmark = "benchmarks/cnfxorcard/new/", names = [name])
+        #analyze_solver(benchmark = "benchmarks/cnfxorcard/new/", names = [name])
+        #analyze_solver(benchmark = "benchmarks/cards/", names = [name])
