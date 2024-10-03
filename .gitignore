@@ -2,6 +2,7 @@
 *.sh
 *.slurm
 *.png
+*.out
 benchmarks/
 error_messages/
 __pycache__
