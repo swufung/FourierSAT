@@ -1,6 +1,6 @@
 FourierSAT is a versatile SAT/MaxSAT solver for hybrid Boolean constraints. 
 
-The types of constraints include: CNF (-or), XOR, cardinality constraints and NAE (not all equal).
+The types of constraints include CNF (-or), XOR, cardinality constraints, and NAE (not all equal).
 
 Paper: FourierSAT: A Fourier Expansion-Based Algebraic Framework for Solving Hybrid Boolean Constraints
 https://arxiv.org/abs/1912.01032
@@ -31,11 +31,11 @@ python usage:
 
 For example, in FourierSAT_Github_AIJ/, run:
 
-	python FourierSAT.py sample.cnf --timelimit 10 --tolerance 1 --cpus 2 --verbose 1
+	python FourierSAT.py sample.cnf --timelimit 10
 
 Input: Extended DIMACS Format
 -------------------------
-FourierSAT accepts an extended DIMACS format which can handle CNF, XOR, cardinality constraints and Not-all-equal clauses. MaxSAT instances (.wcnf) and cardinality constraints encoded in pseudo-Boolean format (.opb) are also accepted.
+FourierSAT accepts an extended DIMACS format that can handle CNF, XOR, cardinality constraints, and Not-all-equal clauses. MaxSAT instances (.wcnf) and cardinality constraints encoded in pseudo-Boolean format (.opb) are also accepted.
 
 CNF: "[literals] 0"
 
@@ -47,15 +47,7 @@ XOR: "x [literals] 0"
      
 Cardinality constraints: 
       
-    eg: "+1 x_1 +1 x_2 +1 x_4 + 1 x_5 >= 2"
-    
-  Alternatively, you can use the pseudo-Boolean encoding:
-  	
-	"1 x1 + 1 x2 + 1 x4 - 1 x5 >= 1"
-   
-  if you want to include a global cardinality constraint (a constriant containing all variables and all the literals are positive), use a line "g [k]". (Note: no '0' at the end of the line!)
-  
-      eg: x_1+x_2+x_3+x_4+x_5 <= 2: "g -2"
+    eg: "+1 x_1 +1 x_2 +1 x_4 + 1 x_5 >= 2 ;" (note the ";")
       
 Not all equal: "n [literals] 0"
 
