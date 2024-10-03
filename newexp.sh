@@ -1,5 +1,5 @@
 #!/bin/bash
-
+mkdir results_2024
 for beta10 in $(seq 0 2 9);
 do
          ./run.slurm randomInstances/cards fouriersat unconstrained_SQUARE_HJ_1.$beta10 1 square HJ 0 1.$beta10 solver
