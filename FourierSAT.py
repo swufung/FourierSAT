@@ -16,6 +16,8 @@ import GSAT
 import sgd
 import coordinate_descent
 import gradient_descent
+from HJ_utils import *
+from hj_prox import *
 
 #update the weights of UNSAT constraints
 def verify_sol_update_weights(formula,x,klist,weight,ctype):
@@ -74,6 +76,8 @@ def optimizer_handler(clauses,klist,param,weight,ctype,no,FC_table):
         distFval, contFval, x, iterNum = sgd.ADAM(x0, args)
     elif ARGS.optimizer == "CD":
         distFval, contFval, x, iterNum = coordinate_descent.coordinate_descent(x0, args)
+    elif ARGS.optimizer == "HJPROX":
+        distFval, contFval, x, iterNum = hj_prox.hj_prox(x0, args)
     else:
         opt = {'maxiter':50,'disp':True}
         if ARGS.unconstrained == 1:  # unconstrained optimization
